@@ -1,0 +1,25 @@
+{
+  "name": "aseba-syntax",
+  "displayName": "Aseba Syntax",
+  "description": "Aseba scripts syntax highlighting",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "aseba",
+      "aliases": ["Aseba", "aseba"],
+      "extensions": [".aesl"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "aseba",
+      "scopeName": "",
+      "path": "./syntaxes/aseba.tmLanguage.json"
+    }]
+  }
+}
