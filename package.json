@@ -18,7 +18,7 @@
     }],
     "grammars": [{
       "language": "aseba",
-      "scopeName": "",
+      "scopeName": "source.aseba",
       "path": "./syntaxes/aseba.tmLanguage.json"
     }]
   }
