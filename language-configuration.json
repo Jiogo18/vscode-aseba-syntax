@@ -19,5 +19,11 @@
     "surroundingPairs": [
         ["[", "]"],
         ["(", ")"],
+    ],
+    "onEnterRules": [
+        {
+            "beforeText": "^\\s*(?:sub|onevent|when|for|if|else if|else)(\\s+.*)?$",
+            "action": { "indent": "indent" }
+        }
     ]
 }
