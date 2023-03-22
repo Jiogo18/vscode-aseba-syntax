@@ -14,6 +14,7 @@
     "url": "https://github.com/Jiogo18/vscode-aseba-syntax"
   },
   "license": "MIT",
+  "publisher": "Jiogo18",
   "contributes": {
     "languages": [{
       "id": "aseba",

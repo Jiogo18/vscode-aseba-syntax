@@ -10,8 +10,8 @@ Syntax highlighting for Aseba language.
 ![Event declaration](https://github.com/Jiogo18/vscode-aseba-syntax/blob/main/images/sample_onevent.png?raw=true)
 
 - [x] keywords (var, const, onevent, if, ...)
-- [x] # comments and #* comments *#
-- [x] # TODO and # FIXME
+- [x] `# comments` and `#* comments *#`
+- [x] `# TODO` and `# FIXME`
 - [x] HTML elements before and after the Aseba code for .aesl exported files
 
 ## Requirements
