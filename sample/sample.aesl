@@ -1,0 +1,275 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+<event size="1" name="user"/>
+
+
+<!--node P�riph�rique s�rie USB-->
+<node nodeId="{9298b047-273b-45f4-93ce-ba0d12394f95}" name="P�riph�rique s�rie USB"><![CDATA[var bottomColor[3]
+
+var state
+
+# variables for notes
+var notes[6]
+var durations[6]
+var note_index
+var note_count
+var wave[142]
+var i
+var wave_phase
+var wave_intensity
+
+var topColor[3]
+var eventCache[] = [0, 0, 0, 0, 0, 0]
+var todo[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+call sound.system(-1)
+
+bottomColor = [0, 0, 0]
+
+call leds.top(0, 0, 0)
+call leds.bottom.left(0, 0, 0)
+call leds.bottom.right(0, 0, 0)
+call leds.circle(0, 0, 0, 0, 0, 0, 0, 0)
+
+state = 0
+
+# init. variables for notes
+note_index = 6
+note_count = 6
+
+# compute a sinus wave for sound
+for i in 0 : 141 do
+	wave_phase = (i - 70) * 468
+	call math.cos(wave_intensity, wave_phase)
+	wave[i] = wave_intensity / 256
+end
+call sound.wave(wave)
+
+topColor = [0, 0, 0]
+
+timer.period[1] = 50
+
+sub display_state
+	call leds.circle((state&1)*32,(state&2)*16,(state&4)*8,(state&8)*4,(state&16)*2,state&32,(state&64)/2,(state&128)/4)
+
+# when a note is finished, play the next one
+onevent sound.finished
+	if note_index != note_count then
+		call sound.freq(notes[note_index], durations[note_index])
+		note_index++
+	end
+
+onevent prox
+	when prox.ground.delta[0] >= 450 and prox.ground.delta[1] >= 450 do
+		eventCache[0] = 1
+	end
+	when prox.ground.delta[0] <= 400 and prox.ground.delta[1] >= 450 do
+		eventCache[1] = 1
+	end
+	when prox.ground.delta[0] >= 450 and prox.ground.delta[1] <= 400 do
+		eventCache[2] = 1
+	end
+	when prox.ground.delta[0] <= 400 and prox.ground.delta[1] <= 400 do
+		eventCache[3] = 1
+	end
+	eventCache[4] = 1
+
+onevent buttons
+	when button.center != 0 do
+		eventCache[5] = 1
+	end
+
+onevent timer1
+	if eventCache[0] != 0 and bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] >= 16 then
+		todo[0] = 1
+	end
+	if eventCache[1] != 0 and bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] >= 16 then
+		todo[1] = 1
+	end
+	if eventCache[2] != 0 and bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] >= 16 then
+		todo[2] = 1
+	end
+	if eventCache[3] != 0 and bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] >= 16 then
+		todo[3] = 1
+	end
+	if eventCache[4] != 0 then
+		todo[4] = 1
+	end
+	if eventCache[5] != 0 then
+		todo[5] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] < 16 and state == 0 do
+		todo[6] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] < 16 and state == 65 do
+		todo[7] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] < 16 and state == 85 do
+		todo[8] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] >= 16 and bottomColor[2] < 16 and state == 145 do
+		todo[9] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] < 16 and bottomColor[2] >= 16 and state == 0 do
+		todo[10] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] < 16 and bottomColor[2] >= 16 and state == 20 do
+		todo[11] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] < 16 and bottomColor[2] >= 16 and state == 40 do
+		todo[12] = 1
+	end
+	when bottomColor[0] < 16 and bottomColor[1] < 16 and bottomColor[2] >= 16 and state == 100 do
+		todo[13] = 1
+	end
+	when bottomColor[0] >= 16 and bottomColor[1] < 16 and bottomColor[2] < 16 and state == 0 do
+		todo[14] = 1
+	end
+	if todo[0] != 0 then
+		motor.left.target = 200
+		motor.right.target = 200
+	end
+	if todo[1] != 0 then
+		motor.left.target = 200
+		motor.right.target = 50
+		if state < 2 then
+			state = 0
+		else
+			state -= 2
+		end
+		callsub display_state
+	end
+	if todo[2] != 0 then
+		motor.left.target = 50
+		motor.right.target = 200
+		if state < 2 then
+			state = 0
+		else
+			state -= 2
+		end
+		callsub display_state
+	end
+	if todo[3] != 0 then
+		motor.left.target = -200
+		motor.right.target = -200
+		notes = [262, 0, 0, 0, 0, 0]
+		durations = [7, 28, 28, 28, 28, 28]
+		note_index = 1
+		note_count = 6
+		call sound.freq(notes[0], durations[0])
+		if state < 4 then
+			state = 0
+		else
+			state -= 4
+		end
+		callsub display_state
+	end
+	if todo[4] != 0 then
+		if state > 254 then
+			state = 255
+		else
+			state += 1
+		end
+		callsub display_state
+	end
+	if todo[5] != 0 then
+		call leds.bottom.left(0,32,0)
+		call leds.bottom.right(0,32,0)
+		bottomColor = [0,32,0]
+		state = 0
+		callsub display_state
+	end
+	if todo[6] != 0 then
+		motor.left.target = 200
+		motor.right.target = 200
+		call leds.top(0,32,32)
+		topColor = [0,32,32]
+	end
+	if todo[7] != 0 then
+		motor.left.target = 100
+		motor.right.target = -100
+		call leds.top(32,32,0)
+		topColor = [32,32,0]
+	end
+	if todo[8] != 0 then
+		motor.left.target = 200
+		motor.right.target = 200
+		call leds.top(0,32,32)
+		topColor = [0,32,32]
+	end
+	if todo[9] != 0 then
+		call leds.bottom.left(0,0,32)
+		call leds.bottom.right(0,0,32)
+		bottomColor = [0,0,32]
+		state = 0
+		callsub display_state
+	end
+	if todo[10] != 0 then
+		motor.left.target = 0
+		motor.right.target = 0
+		call leds.top(32,0,32)
+		topColor = [32,0,32]
+		notes = [262, 311, 370, 440, 370, 524]
+		durations = [7, 7, 7, 7, 7, 14]
+		note_index = 1
+		note_count = 6
+		call sound.freq(notes[0], durations[0])
+	end
+	if todo[11] != 0 then
+		motor.left.target = 100
+		motor.right.target = -100
+		call leds.top(32,32,0)
+		topColor = [32,32,0]
+	end
+	if todo[12] != 0 then
+		motor.left.target = 200
+		motor.right.target = 200
+		call leds.top(0,32,32)
+		topColor = [0,32,32]
+	end
+	if todo[13] != 0 then
+		call leds.bottom.left(32,0,0)
+		call leds.bottom.right(32,0,0)
+		bottomColor = [32,0,0]
+		state = 0
+		callsub display_state
+	end
+	if todo[14] != 0 then
+		motor.left.target = 0
+		motor.right.target = 0
+		call leds.top(32,0,32)
+		topColor = [32,0,32]
+		notes = [262, 311, 370, 262, 370, 524]
+		durations = [7, 7, 7, 7, 7, 14]
+		note_index = 1
+		note_count = 6
+		call sound.freq(notes[0], durations[0])
+	end
+	eventCache[0] = 0
+	eventCache[1] = 0
+	eventCache[2] = 0
+	eventCache[3] = 0
+	eventCache[4] = 0
+	eventCache[5] = 0
+	todo[0] = 0
+	todo[1] = 0
+	todo[2] = 0
+	todo[3] = 0
+	todo[4] = 0
+	todo[5] = 0
+	todo[6] = 0
+	todo[7] = 0
+	todo[8] = 0
+	todo[9] = 0
+	todo[10] = 0
+	todo[11] = 0
+	todo[12] = 0
+	todo[13] = 0
+	todo[14] = 0
+]]></node>
+
+
+</network>
