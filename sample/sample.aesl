@@ -36,6 +36,8 @@ call leds.circle(0, 0, 0, 0, 0, 0, 0, 0)
 
 state = 0
 
+# FIXME add a note to the song
+
 # init. variables for notes
 note_index = 6
 note_count = 6
@@ -49,6 +51,8 @@ end
 call sound.wave(wave)
 
 topColor = [0, 0, 0]
+
+# TODO update later
 
 timer.period[1] = 50
 
