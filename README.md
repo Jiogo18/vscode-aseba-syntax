@@ -23,8 +23,3 @@ Syntax highlighting for Aseba language.
 ## Release Notes
 
 See [CHANGELOG.md](CHANGELOG.md)
-
-### 1.0.0
-
-Initial release with Aseba syntax highlighting.
-Includes keywords, comments, TODO, FIXME and HTML elements.

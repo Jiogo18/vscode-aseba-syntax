@@ -6,6 +6,20 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.0.1] - 2023-03-22
+
+### Added
+
+- Publisher name to `package.json`
+
+### Changed
+
+- Sample Images
+
+### Fixed
+
+- `#` in README.md
+
 ## [1.0.0] - 2023-03-22
 
 ### Added
@@ -13,5 +27,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Initial release with Aseba syntax highlighting.
 - Includes keywords, comments, TODO, FIXME and HTML elements.
 
-[unreleased]: https://github.com/Jiogo18/vscode-aseba-syntax/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/Jiogo18/vscode-aseba-syntax/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Jiogo18/vscode-aseba-syntax/releases/tag/v1.0.1
 [1.0.0]: https://github.com/Jiogo18/vscode-aseba-syntax/releases/tag/v1.0.0
