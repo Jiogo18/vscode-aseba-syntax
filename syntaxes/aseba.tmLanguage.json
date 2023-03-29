@@ -17,22 +17,33 @@
 			"name": "invalid.illegal.unknown.aseba",
 			"match": "."
 		},
+		"special_operators": {
+			"name": "string.unquoted.operator.aseba",
+			"match": "&amp;|&lt;|&gt;|&amp;=|&lt;=|&gt;="
+		},
 		"operators": {
 			"name": "keyword.operator.aseba",
-			"match": "==|!=|<=|<|>=|>|\\+=|-=|\\*=|/=|\\+\\+|--|\\+|-|\\*|/|\\^|\\||&|~|:|\\."
+			"match": "==|!=|<=|<|>=|>|\\+=|-=|\\*=|/=|\\+\\+|--|\\^=|&=|%=|<<=|>>=|<<|>>|\\+|-|\\*|/|\\^|\\||&|~|:|\\.|%"
+		},
+		"coma": {
+			"name": "keyword.operator.coma.aseba",
+			"match": ","
 		},
 		"function-call": {
-			"name": "meta.function-call.aseba",
+			"name": "invalid.illegal.function-call.aseba",
 			"begin": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\(",
 			"beginCaptures": {
 				"1": {
 					"name": "entity.name.function.aseba"
 				}
 			},
-			"end": "\\)",
+			"end": "\\)$",
 			"patterns": [
 				{
 					"include": "#expressions"
+				},
+				{
+					"include": "#coma"
 				}
 			]
 		},
@@ -62,20 +73,20 @@
 			"match": "(-{0,1}\\d+|0x([0-9]|[a-f]|[A-F])+|0b[0-1]+)\\b"
 		},
 		"TODO": {
-			"name": "comment.block.aseba",
+			"name": "comment.line.aseba",
 			"match": "(#\\s*\\bTODO)\\b.*$",
 			"captures": {
 				"1": {
-					"name": "keyword.other.todo.aseba"
+					"name": "markup.bold.todo.aseba"
 				}
 			}
 		},
 		"FIXME": {
-			"name": "comment.block.aseba",
+			"name": "comment.line.aseba",
 			"match": "(#\\s*\\bFIXME)\\b.*$",
 			"captures": {
 				"1": {
-					"name": "keyword.other.fixme.aseba"
+					"name": "markup.bold.fixme.aseba"
 				}
 			}
 		},
@@ -114,10 +125,13 @@
 		},
 		"variable": {
 			"name": "variable.other.aseba",
-			"match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+			"match": "\\b[\\p{L}_]\\w*\\b"
 		},
 		"expressions": {
 			"patterns": [
+				{
+					"include": "#special_operators"
+				},
 				{
 					"include": "#operators"
 				},
@@ -134,7 +148,7 @@
 					"include": "#array"
 				},
 				{
-					"match": ","
+					"include": "#coma"
 				}
 			]
 		},
