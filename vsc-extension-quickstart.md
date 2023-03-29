@@ -27,3 +27,8 @@
 
 * To start using your extension with Visual Studio Code copy it into the `<user home>/.vscode/extensions` folder and restart Code.
 * To share your extension with the world, read on https://code.visualstudio.com/docs about publishing an extension.
+
+## Publish your extension
+
+* To package your extension to a `.vsix` file, run `vsce package` in the same folder where your `package.json` is located.
+* To publish your extension, run `vsce publish` in the same folder where your `package.json` is located.
